@@ -86,13 +86,13 @@ t.daemon = True
 t.start()
 
 circle_colors = [
-    (color[0], color[1], color[2])
+    pygame.Color(color[0], color[1], color[2], 255)
     for color in pastel_world_colors
 ]
 
 fading_colors = FadingColors(
     number_of_steps=200,
-    colors=pastel_world_colors_darker
+    colors=pastel_world_colors
 )
 
 draw_pygame(

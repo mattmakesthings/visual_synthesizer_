@@ -1,16 +1,36 @@
 import pygame
 
+class Movement:
+    def __init__(self, x_step, y_step):
+        self.x_step = x_step
+        self.y_step = y_step
+
+    def step(self):
+        return self.x_step, self.y_step
+
 
 class Circle(object):
-    def __init__(self, x, y, color, size=700, shrink_step=3):
+    def __init__(
+            self,
+            x,
+            y,
+            color,
+            size=700,
+            shrink_step=3,
+            movement=None,
+            fade_step=0
+    ):
         self.x = x
         self.y = y
         self.color = color
         self.size = size
         self.shrink_step = shrink_step
+        self.movement = movement if movement else Movement(0, 0)
+        self.fade_step = fade_step
 
     def shrink(self, amount=None):
         self.size -= amount if amount else self.shrink_step
+        # self.color=
 
     def draw(self, screen):
         pygame.draw.circle(
@@ -20,23 +40,21 @@ class Circle(object):
             self.size
         )
 
+    def move(self, movement=None):
+        if movement:
+            x_move, y_move = movement.step()
+        else:
+            x_move, y_move = self.movement.step()
 
-class VariableShrinker:
-    def __init__(self, start, end, step):
-        self.start = start
-        self.end = end
-        self.step = step
-        self.current_shrink_step = start
+        self.x += x_move
+        self.y += y_move
 
-    def shrinker_shape(self, shape):
+    def fade(self, fade_step=None):
+        if not fade_step:
+            fade_step = self.fade_step
 
-        if self.current_shrink_step > abs(self.end):
-            self.current_shrink_step = abs(self.start)
-        if self.current_shrink_step < abs(self.start):
-            self.current_shrink_step = abs(self.end)
+        if self.color.a - fade_step < 0:
+            self.color.a = 0
+            return
 
-        self.current_shrink_step += self.step
-
-        shape.shrink_step = self.current_shrink_step
-        # shape.shrink_step = shape.size // 100 + shape.shrink_step
-        return shape
+        self.color.a -= fade_step

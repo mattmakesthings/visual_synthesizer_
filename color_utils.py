@@ -23,17 +23,19 @@ class ColorShifter:
 
 
 class FadingColors:
-    colors = itertools.cycle(['green', 'blue', 'purple', 'pink', 'red', 'orange'])
+    # colors = itertools.cycle(['green', 'blue', 'purple', 'pink', 'red', 'orange'])
 
-    base_color = next(colors)
-    next_color = next(colors)
-    current_color = base_color
+    # base_color = next(colors)
+    # next_color = next(colors)
+    # current_color = base_color
 
     def __init__(self, number_of_steps, colors):
         self.step = 1
         self.number_of_steps = number_of_steps
         self.colors = itertools.cycle(colors)
-        self.current_color
+        self.base_color = next(self.colors)
+        self.next_color = next(self.colors)
+        self.current_color = self.base_color
 
     def fade(self):
         self.step += 1
